@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voice To-Do</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="main.js"></script>
+  </head>
+
+  <body>
+    <h1>Voice To-Do<img src="img/mic.png" alt="mic" /></h1>
+    <p>Press and hold spacebar then speak to select an option</p>
+    <p>
+      <select id="menu">
+        <option value="add">Add</option>
+        <option value="remove">Remove</option>
+        <option value="move">Move</option>
+        <option value="edit">Edit</option>
+      </select>
+      <button id="btn">GO</button>
+    </p>
+    <hr />
+
+    <!-- Ranking List Output -->
+    <div id="output"></div>
+  </body>
+</html>
