@@ -2,14 +2,17 @@
 
 // text-to-speech
 // https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/speak
+// https://javascript.plainenglish.io/teach-your-pc-to-speak-using-javascript-c6e4460fbabc
 // speech-to-text
 // https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API
 
 // Variables
 let num = 0;
+let spacePressed = false;
 
 // HTML Variables
 let outputEl = document.getElementById("output");
+let msg = document.getElementById("output").innerHTML;
 
 // Tasks array
 let tasks = [];
@@ -68,24 +71,29 @@ function move() {
   outputEl.innerHTML = tasks.join("");
   console.log("Move");
 }
-// Key Event Listener
+// Key Event Listener Push-To-Talk
 document.addEventListener("keydown", keyDownHandler);
 document.addEventListener("keyup", keyUpHandler);
 
 function keyDownHandler(event) {
-  if (event.keyCode === 32) {
+  if (event.code === "Space") {
     spacePressed = true;
   }
 }
-
 function keyUpHandler(event) {
-  if (event.keyCode === 32) {
+  if (event.code === "Space") {
     spacePressed = false;
   }
 }
-
-function listen() {
+function pushToTalk() {
   if (spacePressed === true) {
-    console.log("good");
+    document.getElementById("img").src = `img/unmute.png`;
+    document.getElementById("img").alt = `unmute`;
   }
+}
+
+function speak() {
+  let message = new SpeechSynthesisUtterance(msg);
+  // message.voice[8];
+  window.speechSynthesis.speak(message);
 }
