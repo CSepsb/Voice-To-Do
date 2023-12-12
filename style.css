@@ -1,10 +1,22 @@
 h1 {
+  color: red;
   text-align: center;
+  font-size: 50px;
+  -webkit-text-stroke: 3px black;
+}
+p {
+  text-align: center;
+  font-weight: bold;
 }
 img {
   width: 50px;
 }
+html {
+  min-height: 100%;
+}
 body {
+  min-height: 100%;
+
   margin-top: 3%;
   margin-left: 15%;
   margin-right: 15%;
@@ -13,8 +25,22 @@ body {
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   line-height: 1.5;
   font-size: 1.125rem;
+  background-image: linear-gradient(
+    45deg,
+    hsl(120deg 100% 25%) 1%,
+    hsl(109deg 100% 27%) 40%,
+    hsl(98deg 100% 30%) 48%,
+    hsl(87deg 100% 32%) 51%,
+    hsl(76deg 100% 34%) 51%,
+    hsl(65deg 100% 36%) 50%,
+    hsl(55deg 100% 39%) 50%,
+    hsl(44deg 100% 41%) 49%,
+    hsl(33deg 100% 43%) 49%,
+    hsl(22deg 100% 45%) 52%,
+    hsl(11deg 100% 48%) 60%,
+    hsl(0deg 100% 50%) 99%
+  );
 }
-
 select,
 button {
   font-family: "Courier New", Courier, monospace;

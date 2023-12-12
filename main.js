@@ -10,6 +10,18 @@
 let num = 0;
 let spacePressed = false;
 
+// Prefixed properties
+let SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+let SpeechGrammarList =
+  window.SpeechGrammarList || window.webkitSpeechGrammarList;
+let SpeechRecognitionEvent =
+  window.SpeechRecognitionEvent || window.webkitSpeechRecognitionEvent;
+
+// Grammar
+let recognition = new SpeechRecognition();
+let speechRecognitionList = new SpeechGrammarList();
+
 // HTML Variables
 let outputEl = document.getElementById("output");
 let msg = document.getElementById("output").innerHTML;
@@ -114,16 +126,35 @@ function pushToTalk() {
   if (spacePressed === true) {
     document.getElementById("img").src = "img/unmute.png";
     document.getElementById("img").alt = "unmute";
+    recognition.start();
+    document.querySelector('h1').style.color = 'green';
   } else {
     document.getElementById("img").src = "img/mute.png";
     document.getElementById("img").alt = "mute";
+    recognition.stop();
+    document.querySelector('h1').style.color = 'red';
   }
 }
 
 function speak() {
   for (let i = 0; i < tasks.length; i++) {
-  let taskNum = i + 1;
-  let taskText = tasks[i];
-  let message = new SpeechSynthesisUtterance(`Task ${taskNum}: ${taskText}`);
-  window.speechSynthesis.speak(message);
-}}
+    let taskNum = i + 1;
+    let taskText = tasks[i];
+    let message = new SpeechSynthesisUtterance(`Task ${taskNum}: ${taskText}`);
+    window.speechSynthesis.speak(message);
+  }
+}
+
+// Event listeners
+recognition.addEventListener("result", recognitionResultHandler);
+recognition.addEventListener("end", recognitionEndHandler);
+
+// Event handler
+function recognitionResultHandler(event) {
+  let transcript = event.results[0][0].transcript;
+  console.log("Recognition Result:", transcript);
+}
+
+function recognitionEndHandler() {
+  console.log("Recognition Ended");
+}
