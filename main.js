@@ -35,20 +35,32 @@ function btnClicked() {
     move();
   }
 }
+
 // Functions
 function add() {
   let task = prompt("Enter item:");
   num++;
-  tasks.push(`<div>${num}: ${task} </div>`);
-  outputEl.innerHTML = tasks.join("");
+  tasks.push(`${task}`);
+
+  outputEl.innerHTML = "";
+  for (let i = 0; i < tasks.length; i++) {
+    outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
+  }
+
   console.log("Add Item");
 }
 
 function edit() {
   let index = +prompt("Enter position:");
   let item = prompt("Replace with:");
-  tasks[index - 1] = `<div>${index}: ${item} </div>`;
-  outputEl.innerHTML = tasks.join("");
+
+  tasks[index - 1] = `${item}`;
+
+  outputEl.innerHTML = "";
+  for (let i = 0; i < tasks.length; i++) {
+    outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
+  }
+
   console.log("Edit");
 }
 
@@ -56,21 +68,30 @@ function remove() {
   let index = +prompt("Position to remove:");
   tasks.splice(index - 1, 1);
   num--;
-  for (let i = index - 1; i < tasks.length; i++) {
-    tasks[i] = `<div>${i + 1}: ${tasks[i].split(":")[1]}</div>`;
+
+  outputEl.innerHTML = "";
+  for (let i = 0; i < tasks.length; i++) {
+    outputEl.innerHTML += `<div>${i + 1}: ${tasks[i].split(":")[1]}</div>`;
   }
-  outputEl.innerHTML = tasks.join("");
+
   console.log("Remove at Position");
 }
 
 function move() {
   let index1 = +prompt("Move item from:");
   let index2 = +prompt("Move item to:");
-  let movedItem = tasks.splice(index1 - 1, 1);
+
+  let movedItem = tasks.splice(index1 - 1, 1)[0];
   tasks.splice(index2 - 1, 0, movedItem);
-  outputEl.innerHTML = tasks.join("");
+
+  outputEl.innerHTML = "";
+  for (let i = 0; i < tasks.length; i++) {
+    outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
+  }
+
   console.log("Move");
 }
+
 // Key Event Listener Push-To-Talk
 document.addEventListener("keydown", keyDownHandler);
 document.addEventListener("keyup", keyUpHandler);
@@ -78,22 +99,31 @@ document.addEventListener("keyup", keyUpHandler);
 function keyDownHandler(event) {
   if (event.code === "Space") {
     spacePressed = true;
+    pushToTalk();
   }
 }
+
 function keyUpHandler(event) {
   if (event.code === "Space") {
     spacePressed = false;
+    pushToTalk();
   }
 }
+
 function pushToTalk() {
   if (spacePressed === true) {
-    document.getElementById("img").src = `img/unmute.png`;
-    document.getElementById("img").alt = `unmute`;
+    document.getElementById("img").src = "img/unmute.png";
+    document.getElementById("img").alt = "unmute";
+  } else {
+    document.getElementById("img").src = "img/mute.png";
+    document.getElementById("img").alt = "mute";
   }
 }
 
 function speak() {
-  let message = new SpeechSynthesisUtterance(msg);
-  // message.voice[8];
+  for (let i = 0; i < tasks.length; i++) {
+  let taskNum = i + 1;
+  let taskText = tasks[i];
+  let message = new SpeechSynthesisUtterance(`Task ${taskNum}: ${taskText}`);
   window.speechSynthesis.speak(message);
-}
+}}
