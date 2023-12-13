@@ -1,38 +1,14 @@
 // Voice To-Do
 
-// text-to-speech
-// https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/speak
-// https://javascript.plainenglish.io/teach-your-pc-to-speak-using-javascript-c6e4460fbabc
-// speech-to-text
-// https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API
-
 // Variables
 let num = 0;
 let spacePressed = false;
-let recognitionActive = false;
-
-// Prefixed properties// Prefixed properties
-
-let SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
-let SpeechGrammarList =
-  window.SpeechGrammarList || window.webkitSpeechGrammarList;
-let SpeechRecognitionEvent =
-  window.SpeechRecognitionEvent || window.webkitSpeechRecognitionEvent;
-
-// Grammar
-let recognition = new SpeechRecognition();
-let speechRecognitionList = new SpeechGrammarList();
 
 // HTML Variables
 let outputEl = document.getElementById("output");
-let msg = document.getElementById("output").innerHTML;
 
 // Tasks array
 let tasks = [];
-
-// Button Event Listener
-document.getElementById("btn").addEventListener("click", btnClicked);
 
 function btnClicked() {
   // Get Menu Selection
@@ -52,20 +28,23 @@ function btnClicked() {
 
 // Functions
 function add() {
-  let task = prompt("Enter item:");
+  if (transcript === "add") {
+  }
+  alert("Name of the task.");
   num++;
-  tasks.push(`${task}`);
+  tasks.push(`${transcript}`);
 
   outputEl.innerHTML = "";
   for (let i = 0; i < tasks.length; i++) {
     outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
   }
-
-  console.log("Add Item");
 }
 
 function remove() {
-  let index = +prompt("Position to remove:");
+  if (transcript === "remove") {
+  }
+  alert("Position to remove:");
+  let index = +transcript;
   tasks.splice(index - 1, 1);
   num--;
 
@@ -73,26 +52,28 @@ function remove() {
   for (let i = 0; i < tasks.length; i++) {
     outputEl.innerHTML += `<div>${i + 1}: ${tasks[i].split(":")[1]}</div>`;
   }
-
-  console.log("Remove at Position");
 }
 function edit() {
-  let index = +prompt("Enter position:");
-  let item = prompt("Replace with:");
-
-  tasks[index - 1] = `${item}`;
+  if (transcript === "edit") {
+  }
+  alert("Enter position:");
+  let index = +transcript;
+  alert("Replace with:");
+  tasks[index - 1] = `${transcript}`;
 
   outputEl.innerHTML = "";
   for (let i = 0; i < tasks.length; i++) {
     outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
   }
-
-  console.log("Edit");
 }
 
 function move() {
-  let index1 = +prompt("Move item from:");
-  let index2 = +prompt("Move item to:");
+  if (transcript === "move") {
+  }
+  alert("Move item from:");
+  let index1 = +transcript;
+  alert("Move item to:");
+  let index2 = +transcript;
 
   let movedItem = tasks.splice(index1 - 1, 1)[0];
   tasks.splice(index2 - 1, 0, movedItem);
@@ -101,8 +82,6 @@ function move() {
   for (let i = 0; i < tasks.length; i++) {
     outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
   }
-  intructions();
-  console.log("Move");
 }
 
 // Key Event Listener Push-To-Talk
@@ -127,22 +106,12 @@ function pushToTalk() {
   if (spacePressed === true) {
     document.getElementById("img").src = "img/unmute.png";
     document.getElementById("img").alt = "unmute";
-    if (!recognitionActive) {
-      recognition.start();
-      recognitionActive = true;
-
-      document.querySelector("h1").style.color = "green";
-    }
+    document.querySelector("h1").style.color = "hsl(87deg 100% 32%)";
+    speechRecognition();
   } else {
     document.getElementById("img").src = "img/mute.png";
     document.getElementById("img").alt = "mute";
-
-    if (recognitionActive) {
-      recognition.stop();
-      recognitionActive = false;
-
-      document.querySelector("h1").style.color = "red";
-    }
+    document.querySelector("h1").style.color = "red";
   }
 }
 
@@ -155,22 +124,33 @@ function speakAll() {
   }
 }
 function intructions() {
+  if (transcript === "help") {
+  }
   let message = new SpeechSynthesisUtterance(
     `To add task say add, to remove say remove, to move say move and to edit say edit`
   );
   window.speechSynthesis.speak(message);
 }
 
-// Event listeners
-recognition.addEventListener("result", recognitionResultHandler);
-recognition.addEventListener("end", recognitionEndHandler);
+function speechRecognition() {
+  var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+  var recognition = new SpeechRecognition();
 
-// Event handler
-function recognitionResultHandler(event) {
-  let transcript = event.results[0][0].transcript;
-  console.log("Recognition Result:", transcript);
-}
+  recognition.onstart = function () {
+    console.log("Voice recognition activated.");
+  };
 
-function recognitionEndHandler() {
-  console.log("Recognition Ended");
+  recognition.onspeechend = function () {
+    console.log("Voice recognition stopped.");
+    recognition.stop();
+  };
+
+  recognition.onresult = function (event) {
+    var transcript = event.results[0][0].transcript;
+    var confidence = event.results[0][0].confidence;
+    console.log(transcript` ${confidence}%`);
+  };
+
+  recognition.start();
 }
+// https://www.studytonight.com/post/javascript-speech-recognition-example-speech-to-text

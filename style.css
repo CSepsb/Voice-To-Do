@@ -17,7 +17,12 @@ img {
 html {
   min-height: 100%;
 }
-
+hr {
+  height: 10px;
+  backdrop-filter: blur(50px);
+  border: 2px solid;
+  border-radius: 10px;
+}
 body {
   min-height: 100%;
   margin-top: 3%;
