@@ -4,19 +4,22 @@ h1 {
   font-size: 50px;
   -webkit-text-stroke: 3px black;
 }
+
 p {
   text-align: center;
   font-weight: bold;
 }
+
 img {
   width: 50px;
 }
+
 html {
   min-height: 100%;
 }
+
 body {
   min-height: 100%;
-
   margin-top: 3%;
   margin-left: 15%;
   margin-right: 15%;
@@ -41,17 +44,21 @@ body {
     hsl(0deg 100% 50%) 99%
   );
 }
+
 select,
 button {
   font-family: "Courier New", Courier, monospace;
   font-size: 1.125rem;
+  font-weight: bold;
   padding: 5px 10px;
+  border-radius: 10px;
+  border: 3px solid black;
 }
 
 div div {
-  border: 1px solid grey;
+  border: 1px solid white;
   padding: 5px 20px;
   margin-block: 5px;
   border-radius: 5px;
-  background-color: #f9f9ff;
+  backdrop-filter: blur(50px);
 }

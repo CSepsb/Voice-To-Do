@@ -64,6 +64,18 @@ function add() {
   console.log("Add Item");
 }
 
+function remove() {
+  let index = +prompt("Position to remove:");
+  tasks.splice(index - 1, 1);
+  num--;
+
+  outputEl.innerHTML = "";
+  for (let i = 0; i < tasks.length; i++) {
+    outputEl.innerHTML += `<div>${i + 1}: ${tasks[i].split(":")[1]}</div>`;
+  }
+
+  console.log("Remove at Position");
+}
 function edit() {
   let index = +prompt("Enter position:");
   let item = prompt("Replace with:");
@@ -78,19 +90,6 @@ function edit() {
   console.log("Edit");
 }
 
-function remove() {
-  let index = +prompt("Position to remove:");
-  tasks.splice(index - 1, 1);
-  num--;
-
-  outputEl.innerHTML = "";
-  for (let i = 0; i < tasks.length; i++) {
-    outputEl.innerHTML += `<div>${i + 1}: ${tasks[i].split(":")[1]}</div>`;
-  }
-
-  console.log("Remove at Position");
-}
-
 function move() {
   let index1 = +prompt("Move item from:");
   let index2 = +prompt("Move item to:");
@@ -102,7 +101,7 @@ function move() {
   for (let i = 0; i < tasks.length; i++) {
     outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
   }
-
+  intructions();
   console.log("Move");
 }
 
@@ -128,7 +127,6 @@ function pushToTalk() {
   if (spacePressed === true) {
     document.getElementById("img").src = "img/unmute.png";
     document.getElementById("img").alt = "unmute";
-
     if (!recognitionActive) {
       recognition.start();
       recognitionActive = true;
@@ -148,13 +146,19 @@ function pushToTalk() {
   }
 }
 
-function speak() {
+function speakAll() {
   for (let i = 0; i < tasks.length; i++) {
     let taskNum = i + 1;
     let taskText = tasks[i];
     let message = new SpeechSynthesisUtterance(`Task ${taskNum}: ${taskText}`);
     window.speechSynthesis.speak(message);
   }
+}
+function intructions() {
+  let message = new SpeechSynthesisUtterance(
+    `To add task say add, to remove say remove, to move say move and to edit say edit`
+  );
+  window.speechSynthesis.speak(message);
 }
 
 // Event listeners
