@@ -9,8 +9,10 @@
 // Variables
 let num = 0;
 let spacePressed = false;
+let recognitionActive = false;
 
-// Prefixed properties
+// Prefixed properties// Prefixed properties
+
 let SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 let SpeechGrammarList =
@@ -126,13 +128,23 @@ function pushToTalk() {
   if (spacePressed === true) {
     document.getElementById("img").src = "img/unmute.png";
     document.getElementById("img").alt = "unmute";
-    recognition.start();
-    document.querySelector('h1').style.color = 'green';
+
+    if (!recognitionActive) {
+      recognition.start();
+      recognitionActive = true;
+
+      document.querySelector("h1").style.color = "green";
+    }
   } else {
     document.getElementById("img").src = "img/mute.png";
     document.getElementById("img").alt = "mute";
-    recognition.stop();
-    document.querySelector('h1').style.color = 'red';
+
+    if (recognitionActive) {
+      recognition.stop();
+      recognitionActive = false;
+
+      document.querySelector("h1").style.color = "red";
+    }
   }
 }
 
