@@ -44,13 +44,13 @@ function add() {
 function remove() {
   let index = prompt("Position to remove:");
   tasks.splice(index - 1, 1);
-  num--;
 
   outputEl.innerHTML = "";
   for (let i = 0; i < tasks.length; i++) {
-    outputEl.innerHTML += `<div>${i + 1}: ${tasks[i].split(":")[1]}</div>`;
+    outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
   }
   speakRemove(num);
+  num--;
 }
 function edit() {
   let index = prompt("Enter position:");
@@ -61,7 +61,7 @@ function edit() {
   for (let i = 0; i < tasks.length; i++) {
     outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
   }
-  speakEdit(index - 1, task);
+  speakEdit(index, task);
 }
 
 function move() {
@@ -102,18 +102,21 @@ function pushToSpeak() {
     document.getElementById("img").alt = "unmute";
     document.querySelector("h1").style.color = "hsl(87deg 100% 32%)";
     speakAll();
-  } else {
-    document.getElementById("img").src = "img/mute.png";
-    document.getElementById("img").alt = "mute";
-    document.querySelector("h1").style.color = "red";
   }
 }
 function speakAll() {
   for (let i = 0; i < tasks.length; i++) {
     let taskNum = i + 1;
     let taskText = tasks[i];
-    let message = new SpeechSynthesisUtterance(`Task ${taskNum}, ${taskText}`);
-    window.speechSynthesis.speak(message);
+    if (task.lenght > 1) {
+      let message = new SpeechSynthesisUtterance(`No tasks to do`);
+      window.speechSynthesis.speak(message);
+    } else {
+      let message = new SpeechSynthesisUtterance(
+        `Task ${taskNum}, ${taskText}`
+      );
+      window.speechSynthesis.speak(message);
+    }
   }
 }
 function speakAdd(taskNum, taskText) {
@@ -121,11 +124,13 @@ function speakAdd(taskNum, taskText) {
     `${taskText} added as task number ${taskNum} `
   );
   window.speechSynthesis.speak(message);
+  console.log(message);
 }
 
 function speakRemove(taskNum) {
   let message = new SpeechSynthesisUtterance(`Task number ${taskNum} removed`);
   window.speechSynthesis.speak(message);
+  console.log(message);
 }
 
 function speakEdit(taskNum, taskText) {
@@ -133,10 +138,12 @@ function speakEdit(taskNum, taskText) {
     `Task number ${taskNum}, has been replaced by ${taskText}`
   );
   window.speechSynthesis.speak(message);
+  console.log(message);
 }
 function speakMove(taskNum1, taskNum2) {
   let message = new SpeechSynthesisUtterance(
-    `Task number ${taskNum1}, has been move to ${taskNum2}`
+    `Task number ${taskNum1}, has been moved in the place of task number${taskNum2}`
   );
   window.speechSynthesis.speak(message);
+  console.log(message);
 }
