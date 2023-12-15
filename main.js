@@ -10,6 +10,9 @@ let outputEl = document.getElementById("output");
 // Tasks array
 let tasks = [];
 
+// Button Event Listener
+document.getElementById("btn").addEventListener("click", btnClicked);
+
 function btnClicked() {
   // Get Menu Selection
   let selection = document.getElementById("menu").value;
@@ -26,25 +29,20 @@ function btnClicked() {
   }
 }
 
-// Functions
+// To-Do-List functions
 function add() {
-  if (transcript === "add") {
-  }
-  alert("Name of the task.");
+  let item = prompt("Enter item:");
   num++;
-  tasks.push(`${transcript}`);
-
+  tasks.push(`${item}`);
   outputEl.innerHTML = "";
   for (let i = 0; i < tasks.length; i++) {
     outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
   }
+  speakAdd(num, item);
 }
 
 function remove() {
-  if (transcript === "remove") {
-  }
-  alert("Position to remove:");
-  let index = +transcript;
+  let index = prompt("Position to remove:");
   tasks.splice(index - 1, 1);
   num--;
 
@@ -52,28 +50,23 @@ function remove() {
   for (let i = 0; i < tasks.length; i++) {
     outputEl.innerHTML += `<div>${i + 1}: ${tasks[i].split(":")[1]}</div>`;
   }
+  speakRemove(num);
 }
 function edit() {
-  if (transcript === "edit") {
-  }
-  alert("Enter position:");
-  let index = +transcript;
-  alert("Replace with:");
-  tasks[index - 1] = `${transcript}`;
+  let index = prompt("Enter position:");
+  let task = prompt("Replace with:");
+  tasks[index - 1] = `${task}`;
 
   outputEl.innerHTML = "";
   for (let i = 0; i < tasks.length; i++) {
     outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
   }
+  speakEdit(index - 1, task);
 }
 
 function move() {
-  if (transcript === "move") {
-  }
-  alert("Move item from:");
-  let index1 = +transcript;
-  alert("Move item to:");
-  let index2 = +transcript;
+  let index1 = prompt("Move item from:");
+  let index2 = prompt("Move item to:");
 
   let movedItem = tasks.splice(index1 - 1, 1)[0];
   tasks.splice(index2 - 1, 0, movedItem);
@@ -82,6 +75,7 @@ function move() {
   for (let i = 0; i < tasks.length; i++) {
     outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
   }
+  speakMove(index1, index2);
 }
 
 // Key Event Listener Push-To-Talk
@@ -91,66 +85,58 @@ document.addEventListener("keyup", keyUpHandler);
 function keyDownHandler(event) {
   if (event.code === "Space") {
     spacePressed = true;
-    pushToTalk();
+    pushToSpeak();
   }
 }
 
 function keyUpHandler(event) {
   if (event.code === "Space") {
     spacePressed = false;
-    pushToTalk();
+    pushToSpeak();
   }
 }
-
-function pushToTalk() {
+// Talking functions
+function pushToSpeak() {
   if (spacePressed === true) {
     document.getElementById("img").src = "img/unmute.png";
     document.getElementById("img").alt = "unmute";
     document.querySelector("h1").style.color = "hsl(87deg 100% 32%)";
-    speechRecognition();
+    speakAll();
   } else {
     document.getElementById("img").src = "img/mute.png";
     document.getElementById("img").alt = "mute";
     document.querySelector("h1").style.color = "red";
   }
 }
-
 function speakAll() {
   for (let i = 0; i < tasks.length; i++) {
     let taskNum = i + 1;
     let taskText = tasks[i];
-    let message = new SpeechSynthesisUtterance(`Task ${taskNum}: ${taskText}`);
+    let message = new SpeechSynthesisUtterance(`Task ${taskNum}, ${taskText}`);
     window.speechSynthesis.speak(message);
   }
 }
-function intructions() {
-  if (transcript === "help") {
-  }
+function speakAdd(taskNum, taskText) {
   let message = new SpeechSynthesisUtterance(
-    `To add task say add, to remove say remove, to move say move and to edit say edit`
+    `${taskText} added as task number ${taskNum} `
   );
   window.speechSynthesis.speak(message);
 }
 
-function speechRecognition() {
-  var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
-  var recognition = new SpeechRecognition();
-
-  recognition.onstart = function () {
-    console.log("Voice recognition activated.");
-  };
-
-  recognition.onspeechend = function () {
-    console.log("Voice recognition stopped.");
-    recognition.stop();
-  };
-
-  recognition.onresult = function (event) {
-    var transcript = event.results[0][0].transcript;
-    var confidence = event.results[0][0].confidence;
-    console.log(transcript` ${confidence}%`);
-  };
-
-  recognition.start();
+function speakRemove(taskNum) {
+  let message = new SpeechSynthesisUtterance(`Task number ${taskNum} removed`);
+  window.speechSynthesis.speak(message);
 }
-// https://www.studytonight.com/post/javascript-speech-recognition-example-speech-to-text
+
+function speakEdit(taskNum, taskText) {
+  let message = new SpeechSynthesisUtterance(
+    `Task number ${taskNum}, has been replaced by ${taskText}`
+  );
+  window.speechSynthesis.speak(message);
+}
+function speakMove(taskNum1, taskNum2) {
+  let message = new SpeechSynthesisUtterance(
+    `Task number ${taskNum1}, has been move to ${taskNum2}`
+  );
+  window.speechSynthesis.speak(message);
+}

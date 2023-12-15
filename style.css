@@ -23,6 +23,15 @@ hr {
   border: 2px solid;
   border-radius: 10px;
 }
+select {
+  background-color: blur(50px);
+}
+button {
+  background-color: white;
+}
+button:hover {
+  background-color: red;
+}
 body {
   min-height: 100%;
   margin-top: 3%;
@@ -61,7 +70,7 @@ button {
 }
 
 div div {
-  border: 1px solid white;
+  border: 2px solid;
   padding: 5px 20px;
   margin-block: 5px;
   border-radius: 5px;
