@@ -44,7 +44,6 @@ function add() {
 function remove() {
   let index = prompt("Position to remove:");
   tasks.splice(index - 1, 1);
-
   outputEl.innerHTML = "";
   for (let i = 0; i < tasks.length; i++) {
     outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
@@ -144,6 +143,11 @@ function speakMove(taskNum1, taskNum2) {
   let message = new SpeechSynthesisUtterance(
     `Task number ${taskNum1}, has been moved in the place of task number${taskNum2}`
   );
+  window.speechSynthesis.speak(message);
+  console.log(message);
+}
+function speakError() {
+  let message = new SpeechSynthesisUtterance(`Error`);
   window.speechSynthesis.speak(message);
   console.log(message);
 }
