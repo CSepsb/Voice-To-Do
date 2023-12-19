@@ -7,25 +7,36 @@ let spacePressed = false;
 // HTML Variables
 let outputEl = document.getElementById("output");
 
-// Tasks array
-let tasks = [];
+// Tasks arrays
+let day = [];
+let week = [];
+let month = [];
+let year = [];
 
 // Button Event Listener
 document.getElementById("btn").addEventListener("click", btnClicked);
 
 function btnClicked() {
-  // Get Menu Selection
-  let selection = document.getElementById("menu").value;
+  let menu = document.getElementById("menu").value;
+  let user = document.getElementById("user").value;
 
-  // Implement Menu Selection
-  if (selection === "add") {
+  if (menu === "add") {
     add();
-  } else if (selection === "edit") {
+  } else if (menu === "edit") {
     edit();
-  } else if (selection === "remove") {
+  } else if (menu === "remove") {
     remove();
-  } else if (selection === "move") {
+  } else if (menu === "move") {
     move();
+  }
+  if (user === "day") {
+    console.log("1");
+  } else if (user === "week") {
+    console.log("2");
+  } else if (user === "month") {
+    console.log("3");
+  } else if (user === "year") {
+    console.log("4");
   }
 }
 
@@ -39,6 +50,7 @@ function add() {
     outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
   }
   speakAdd(num, item);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 function remove() {
@@ -54,6 +66,7 @@ function remove() {
   } else {
     speakError();
   }
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 function edit() {
@@ -70,6 +83,7 @@ function edit() {
   } else {
     speakError();
   }
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 function move() {
@@ -88,6 +102,7 @@ function move() {
   } else {
     speakError();
   }
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 // Key Event Listener Push-To-Talk
@@ -109,28 +124,37 @@ function keyUpHandler(event) {
 }
 // Talking functions
 function pushToSpeak() {
-  if (spacePressed === true) {
+  if (spacePressed) {
     document.getElementById("img").src = "img/unmute.png";
     document.getElementById("img").alt = "unmute";
     document.querySelector("h1").style.color = "hsl(87deg 100% 32%)";
     speakAll();
   }
+  if (!spacePressed) {
+    document.getElementById("img").src = "img/mute.png";
+    document.getElementById("img").alt = "mute";
+    document.querySelector("h1").style.color = "red";
+  }
 }
+
 function speakAll() {
   for (let i = 0; i < tasks.length; i++) {
     let taskNum = i + 1;
     let taskText = tasks[i];
-    if (task.lenght > 1) {
+    if (tasks.lenght > 1) {
       let message = new SpeechSynthesisUtterance(`No tasks to do`);
       window.speechSynthesis.speak(message);
+      console.log(message);
     } else {
       let message = new SpeechSynthesisUtterance(
         `Task ${taskNum}, ${taskText}`
       );
       window.speechSynthesis.speak(message);
+      console.log(message);
     }
   }
 }
+
 function speakAdd(taskNum, taskText) {
   let message = new SpeechSynthesisUtterance(
     `${taskText} added as task number ${taskNum} `
@@ -166,4 +190,20 @@ function speakError() {
 }
 function isValidIndex(index) {
   return !isNaN(index) && index >= 1 && index <= tasks.length;
+}
+
+// Persistant data
+
+// Check if tasks exist
+if (localStorage.getItem("tasks")) {
+  tasks = JSON.parse(localStorage.getItem("tasks"));
+  num = tasks.length;
+  displayTasks();
+}
+
+function displayTasks() {
+  outputEl.innerHTML = "";
+  for (let i = 0; i < tasks.length; i++) {
+    outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
+  }
 }
