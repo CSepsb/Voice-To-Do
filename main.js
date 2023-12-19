@@ -43,38 +43,51 @@ function add() {
 
 function remove() {
   let index = prompt("Position to remove:");
-  tasks.splice(index - 1, 1);
-  outputEl.innerHTML = "";
-  for (let i = 0; i < tasks.length; i++) {
-    outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
+  if (isValidIndex(index)) {
+    tasks.splice(index - 1, 1);
+    outputEl.innerHTML = "";
+    for (let i = 0; i < tasks.length; i++) {
+      outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
+    }
+    speakRemove(num);
+    num--;
+  } else {
+    speakError();
   }
-  speakRemove(num);
-  num--;
 }
+
 function edit() {
   let index = prompt("Enter position:");
-  let task = prompt("Replace with:");
-  tasks[index - 1] = `${task}`;
+  if (isValidIndex(index)) {
+    let task = prompt("Replace with:");
+    tasks[index - 1] = `${task}`;
 
-  outputEl.innerHTML = "";
-  for (let i = 0; i < tasks.length; i++) {
-    outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
+    outputEl.innerHTML = "";
+    for (let i = 0; i < tasks.length; i++) {
+      outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
+    }
+    speakEdit(index, task);
+  } else {
+    speakError();
   }
-  speakEdit(index, task);
 }
 
 function move() {
   let index1 = prompt("Move item from:");
   let index2 = prompt("Move item to:");
 
-  let movedItem = tasks.splice(index1 - 1, 1)[0];
-  tasks.splice(index2 - 1, 0, movedItem);
+  if (isValidIndex(index1) && isValidIndex(index2)) {
+    let movedItem = tasks.splice(index1 - 1, 1)[0];
+    tasks.splice(index2 - 1, 0, movedItem);
 
-  outputEl.innerHTML = "";
-  for (let i = 0; i < tasks.length; i++) {
-    outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
+    outputEl.innerHTML = "";
+    for (let i = 0; i < tasks.length; i++) {
+      outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
+    }
+    speakMove(index1, index2);
+  } else {
+    speakError();
   }
-  speakMove(index1, index2);
 }
 
 // Key Event Listener Push-To-Talk
@@ -150,4 +163,7 @@ function speakError() {
   let message = new SpeechSynthesisUtterance(`Error`);
   window.speechSynthesis.speak(message);
   console.log(message);
+}
+function isValidIndex(index) {
+  return !isNaN(index) && index >= 1 && index <= tasks.length;
 }
