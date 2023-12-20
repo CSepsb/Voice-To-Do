@@ -30,27 +30,32 @@ function btnClicked() {
     move();
   }
   if (user === "day") {
-    console.log("1");
+    day = tasks;
   } else if (user === "week") {
-    console.log("2");
+    week = tasks;
   } else if (user === "month") {
-    console.log("3");
+    tasks = month;
   } else if (user === "year") {
-    console.log("4");
+    tasks = year;
   }
 }
 
 // To-Do-List functions
 function add() {
   let item = prompt("Enter item:");
-  num++;
-  tasks.push(`${item}`);
-  outputEl.innerHTML = "";
-  for (let i = 0; i < tasks.length; i++) {
-    outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
+  if (item.length < 1) {
+    speakError();
+  } else {
+    num++;
+    tasks.push(`${item}`);
+    outputEl.innerHTML = "";
+    for (let i = 0; i < tasks.length; i++) {
+      outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
+    }
+    console.log(item);
+    speakAdd(num, item);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   }
-  speakAdd(num, item);
-  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 function remove() {
