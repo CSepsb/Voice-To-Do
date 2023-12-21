@@ -18,7 +18,7 @@ document.getElementById("btn").addEventListener("click", btnClicked);
 
 function btnClicked() {
   let menu = document.getElementById("menu").value;
-  let user = document.getElementById("user").value;
+  let users = document.getElementById("user").value;
 
   if (menu === "add") {
     add();
@@ -29,19 +29,19 @@ function btnClicked() {
   } else if (menu === "move") {
     move();
   }
-  if (user === "day") {
-    day = tasks;
-  } else if (user === "week") {
-    week = tasks;
-  } else if (user === "month") {
+  if (users === "day") {
+    tasks = day;
+  } else if (users === "week") {
+    tasks = week;
+  } else if (users === "month") {
     tasks = month;
-  } else if (user === "year") {
+  } else if (users === "year") {
     tasks = year;
   }
 }
 
 // To-Do-List functions
-function add() {
+function add(user) {
   let item = prompt("Enter item:");
   if (item.length < 1) {
     speakError();
@@ -58,7 +58,7 @@ function add() {
   }
 }
 
-function remove() {
+function remove(user) {
   let index = prompt("Position to remove:");
   if (isValidIndex(index)) {
     tasks.splice(index - 1, 1);
@@ -74,7 +74,7 @@ function remove() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-function edit() {
+function edit(user) {
   let index = prompt("Enter position:");
   if (isValidIndex(index)) {
     let task = prompt("Replace with:");
@@ -91,7 +91,7 @@ function edit() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-function move() {
+function move(user) {
   let index1 = prompt("Move item from:");
   let index2 = prompt("Move item to:");
 
