@@ -19,7 +19,7 @@ html {
 hr {
   height: 10px;
   backdrop-filter: blur(50px);
-  border: 2px solid;
+  border: 2px solid black;
   border-radius: 10px;
 }
 select {

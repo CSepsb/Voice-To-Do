@@ -124,6 +124,7 @@ function keyDownHandler(event) {
 function keyUpHandler(event) {
   if (event.code === "Space") {
     spacePressed = false;
+    stopSpeak();
     pushToSpeak();
   }
 }
@@ -134,28 +135,26 @@ function pushToSpeak() {
     document.getElementById("img").alt = "unmute";
     document.querySelector("h1").style.color = "hsl(87deg 100% 32%)";
     speakAll();
-  }
-  if (!spacePressed) {
+  } else {
     document.getElementById("img").src = "img/mute.png";
     document.getElementById("img").alt = "mute";
     document.querySelector("h1").style.color = "red";
   }
 }
-
 function speakAll() {
-  for (let i = 0; i < tasks.length; i++) {
-    let taskNum = i + 1;
-    let taskText = tasks[i];
-    if (tasks.lenght > 1) {
-      let message = new SpeechSynthesisUtterance(`No tasks to do`);
-      window.speechSynthesis.speak(message);
-      console.log(message);
-    } else {
+  if (tasks.length === 0) {
+    let message = new SpeechSynthesisUtterance(
+      `No tasks to do, if you want to add one? Select add and click go.`
+    );
+    window.speechSynthesis.speak(message);
+  } else {
+    for (let i = 0; i < tasks.length; i++) {
+      let taskNum = i + 1;
+      let taskText = tasks[i];
       let message = new SpeechSynthesisUtterance(
         `Task ${taskNum}, ${taskText}`
       );
       window.speechSynthesis.speak(message);
-      console.log(message);
     }
   }
 }
@@ -196,7 +195,9 @@ function speakError() {
 function isValidIndex(index) {
   return !isNaN(index) && index >= 1 && index <= tasks.length;
 }
-
+function stopSpeak() {
+  window.speechSynthesis.cancel();
+}
 // Persistant data
 
 // Check if tasks exist
