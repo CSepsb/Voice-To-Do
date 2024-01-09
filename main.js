@@ -43,7 +43,7 @@ function btnClicked() {
 // To-Do-List functions
 function add(user) {
   let item = prompt("Enter item:");
-  if (item.length <= 1) {
+  if (item.length === 0) {
     speakError();
   } else {
     num++;
