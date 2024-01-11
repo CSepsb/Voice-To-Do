@@ -7,6 +7,7 @@ let spacePressed = false;
 // HTML Variables
 let outputEl = document.getElementById("output");
 
+let task = [];
 // Tasks arrays
 let day = [];
 let week = [];
@@ -29,15 +30,15 @@ function btnClicked() {
   } else if (menu === "move") {
     move();
   }
-  if (users === "day") {
-    tasks = day;
-  } else if (users === "week") {
-    tasks = week;
-  } else if (users === "month") {
-    tasks = month;
-  } else if (users === "year") {
-    tasks = year;
-  }
+  //   if (users === "day") {
+  //     tasks = day;
+  //   } else if (users === "week") {
+  //     tasks = week;
+  //   } else if (users === "month") {
+  //     tasks = month;
+  //   } else if (users === "year") {
+  //     tasks = year;
+  //   }
 }
 
 // To-Do-List functions
