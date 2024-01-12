@@ -7,7 +7,7 @@ let spacePressed = false;
 // HTML Variables
 let outputEl = document.getElementById("output");
 
-let task = [];
+// let task = [];
 // Tasks arrays
 let day = [];
 let week = [];
@@ -19,30 +19,37 @@ document.getElementById("btn").addEventListener("click", btnClicked);
 
 function btnClicked() {
   let menu = document.getElementById("menu").value;
-  let users = document.getElementById("user").value;
-
   if (menu === "add") {
-    add();
+    checkUserListFunctions(add);
   } else if (menu === "edit") {
-    edit();
+    checkUserListFunctions(edit);
   } else if (menu === "remove") {
-    remove();
+    checkUserListFunctions(remove);
   } else if (menu === "move") {
-    move();
+    checkUserListFunctions(add);
   }
-  //   if (users === "day") {
-  //     tasks = day;
-  //   } else if (users === "week") {
-  //     tasks = week;
-  //   } else if (users === "month") {
-  //     tasks = month;
-  //   } else if (users === "year") {
-  //     tasks = year;
-  //   }
+}
+
+document
+  .getElementById("user")
+  .addEventListener("select", checkUserListFunctions, false);
+// Array user function
+function checkUserListFunctions(functions) {
+  let user = document.getElementById("user").value;
+
+  if (user === "day") {
+    functions();
+  } else if (user === "week") {
+    functions();
+  } else if (user === "month") {
+    functions();
+  } else if (user === "year") {
+    functions();
+  }
 }
 
 // To-Do-List functions
-function add(user) {
+function add() {
   let item = prompt("Enter item:");
   if (item.length === 0) {
     speakError();
@@ -59,7 +66,7 @@ function add(user) {
   }
 }
 
-function remove(user) {
+function remove() {
   let index = prompt("Position to remove:");
   if (isValidIndex(index)) {
     tasks.splice(index - 1, 1);
@@ -75,7 +82,7 @@ function remove(user) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-function edit(user) {
+function edit() {
   let index = prompt("Enter position:");
   if (isValidIndex(index)) {
     let task = prompt("Replace with:");
@@ -92,7 +99,7 @@ function edit(user) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-function move(user) {
+function move() {
   let index1 = prompt("Move item from:");
   let index2 = prompt("Move item to:");
 
@@ -204,7 +211,7 @@ function stopSpeak() {
 // Check if tasks exist
 if (localStorage.getItem("tasks")) {
   tasks = JSON.parse(localStorage.getItem("tasks"));
-  num = tasks.length;
+  checkUserData();
   displayTasks();
 }
 
@@ -212,5 +219,23 @@ function displayTasks() {
   outputEl.innerHTML = "";
   for (let i = 0; i < tasks.length; i++) {
     outputEl.innerHTML += `<div>${i + 1}: ${tasks[i]}</div>`;
+  }
+}
+
+document
+  .getElementById("user")
+  .addEventListener("select", checkUserData, false);
+// Array user function
+function checkUserData() {
+  let user = document.getElementById("user").value;
+
+  if (user === "day") {
+    num = day.length;
+  } else if (user === "week") {
+    num = week.length;
+  } else if (user === "month") {
+    num = month.length;
+  } else if (user === "year") {
+    num = year.length;
   }
 }
