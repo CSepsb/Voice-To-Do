@@ -198,7 +198,7 @@ function isValidIndex(index) {
 // Persistant data
 if (localStorage.getItem("tasks")) {
   tasks = JSON.parse(localStorage.getItem("tasks"));
-
+  num = tasks.length; 
   displayTasks();
 }
 
