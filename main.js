@@ -150,7 +150,7 @@ function speakAll() {
 // Lists Added Task and User
 function speakAdd(taskNum, taskText, user) {
   let message = new SpeechSynthesisUtterance(
-    `${taskText} added as task number ${taskNum} in ${user} list`
+    `${taskText} added as task number ${taskNum}, in ${user} list`
   );
   window.speechSynthesis.speak(message);
   console.log(message);
@@ -166,7 +166,7 @@ function speakRemove(taskNum, user) {
 // Lists Edited Task and User
 function speakEdit(taskNum, originalTask, newTask, user) {
   let message = new SpeechSynthesisUtterance(
-    `Task number ${taskNum}, "${originalTask}" has been replaced by "${newTask}" in ${user} list`
+    `Task number ${taskNum}, "${originalTask}" has been replaced by "${newTask}", in ${user} list`
   );
   window.speechSynthesis.speak(message);
   console.log(message);
@@ -174,7 +174,7 @@ function speakEdit(taskNum, originalTask, newTask, user) {
 // Lists Moved Task and User
 function speakMove(taskNum1, taskNum2, user) {
   let message = new SpeechSynthesisUtterance(
-    `Task number ${taskNum1}, has been moved in the place of task number ${taskNum2} in ${user} list`
+    `Task number ${taskNum1}, has been moved in the place of task number ${taskNum2}, in ${user} list`
   );
   window.speechSynthesis.speak(message);
   console.log(message);
